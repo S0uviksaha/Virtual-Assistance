@@ -5,7 +5,7 @@ export const signUp = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            console.log("Error due to missing fields in signup. name: ", name, " email: ", email, " password: ", password);
+            console.log("Error due to missing fields in signup. name: ", name, " email: ", email);
             console.log("Fill all fields.");
             return res.status(400).json({ message: "All fields are required." });
         }
@@ -16,7 +16,7 @@ export const signUp = async (req, res) => {
             return res.status(400).json({ message: "Email already exists." });
         }
         if(password.length < 6) {
-            console.log("Error due to short password in signup. Password length: ", password.length);
+            console.log("Invalid password.");
             console.log("Password must be at least 6 characters.");
             return res.status(400).json({ message: "Password must be at least 6 characters" });
         }
@@ -29,8 +29,12 @@ export const signUp = async (req, res) => {
             password: hashedPassword,
         });
 
-        console.log("User created successfully. User : ", user);
-        return res.status(201).json({ message: "User created successfully", user });
+        console.log("User created successfully.");
+        console.log({ name, email });
+        return res.status(201).json({ message: "User created successfully", user:{
+            name,
+            email
+        } });
 
     } 
     catch (error) {
